@@ -1,3 +1,11 @@
+const createElements = (arr) => {
+    const htmlElemtnst = arr.map(el => `<span class="btn">${el}</span>`);
+    return(htmlElemtnst.join(" "));
+}
+
+const synoyms = ["hello", "hi", "Konnichiwa"];
+createElements(synoyms)
+
 const loadLesson = () => {
     fetch("https://openapi.programming-hero.com/api/levels/all")
         .then((res) => res.json())
@@ -61,9 +69,7 @@ const displayWordDetail = (word) => {
                 </div>
                 <div class="">
                     <h2 class="font-bold">Synonym</h2>
-                    <span class="btn">Syn 1</span>
-                    <span class="btn">Syn 1</span>
-                    <span class="btn">Syn 1</span>
+                        <div class="">${createElements(word.synonyms)}</div>            
                 </div>`
     document.getElementById("word_modal").showModal();
 }
