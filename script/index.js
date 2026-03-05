@@ -3,8 +3,16 @@ const createElements = (arr) => {
     return(htmlElemtnst.join(" "));
 }
 
-const synoyms = ["hello", "hi", "Konnichiwa"];
-createElements(synoyms)
+const manageSpinner = (status) =>{
+    if(status == true){
+        document.getElementById("spinner").classList.remove("hidden")
+        document.getElementById("word-container").classList.add("hidden")
+    } 
+    else{
+        document.getElementById("word-container").classList.remove("hidden")
+        document.getElementById("spinner").classList.add("hidden")
+    }
+}
 
 const loadLesson = () => {
     fetch("https://openapi.programming-hero.com/api/levels/all")
@@ -18,6 +26,7 @@ const removeActive = () => {
 };
 
 const loadLevelWord = (id) => {
+    manageSpinner(true);
     const url = `https://openapi.programming-hero.com/api/level/${id}`
     fetch(url)
         .then((res) => res.json())
@@ -36,21 +45,6 @@ const loadWordDetail = async (id) => {
     displayWordDetail(details.data);
 }
 
-{
-    // "word": "Eager",
-    // ""meaning: "আগ্রহী",
-    // "pronunciation": "ইগার",
-    // "level": 1,
-    // "sentence": "The kids were eager to open their gifts.",
-    // "points": 1,
-    // "partsOfSpeech": "adjective",
-    // "synonyms": [
-    //     "enthusiastic",
-    //     "excited",
-    //     "keen"
-    // ],
-    // "id": 5
-}
 const displayWordDetail = (word) => {
     console.log(word);
     const detailsBox = document.getElementById("details-container");
@@ -87,6 +81,8 @@ const displayLevelWord = (words) => {
             <h2 class="font-bold text-4xl">নেক্সট Lesson এ যান</h2>
          </div>
         `;
+        manageSpinner(false);
+        return
     }
 
     words.forEach((word) => {
@@ -104,7 +100,8 @@ const displayLevelWord = (words) => {
         </div>
         `
         wordContainer.append(card)
-    })
+    });
+    manageSpinner(false);
 };
 
 const displayLesson = (lessons) => {
