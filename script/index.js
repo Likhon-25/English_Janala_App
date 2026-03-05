@@ -1,14 +1,14 @@
 const createElements = (arr) => {
     const htmlElemtnst = arr.map(el => `<span class="btn">${el}</span>`);
-    return(htmlElemtnst.join(" "));
+    return (htmlElemtnst.join(" "));
 }
 
-const manageSpinner = (status) =>{
-    if(status == true){
+const manageSpinner = (status) => {
+    if (status == true) {
         document.getElementById("spinner").classList.remove("hidden")
         document.getElementById("word-container").classList.add("hidden")
-    } 
-    else{
+    }
+    else {
         document.getElementById("word-container").classList.remove("hidden")
         document.getElementById("spinner").classList.add("hidden")
     }
@@ -37,6 +37,7 @@ const loadLevelWord = (id) => {
             displayLevelWord(data.data)
         });
 };
+
 
 const loadWordDetail = async (id) => {
     const url = `https://openapi.programming-hero.com/api/word/${id}`
@@ -124,5 +125,21 @@ const displayLesson = (lessons) => {
 
 };
 
-
 loadLesson()
+
+document.getElementById("btn-search").addEventListener("click", () => {
+    removeActive();
+    const input = document.getElementById("input-search");
+    const searchValue = input.value.trim().toLowerCase();
+    console.log(searchValue);
+
+    fetch("https://openapi.programming-hero.com/api/words/all")
+        .then((res) => res.json())
+        .then(data => {
+            const allWords = data.data;
+            const filterWords = allWords.filter(word => word.word.toLowerCase().includes(searchValue));
+
+            displayLevelWord(filterWords);
+
+        });
+});
